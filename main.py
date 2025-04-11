@@ -179,3 +179,46 @@ plt.pie(
 plt.title('Top 10 Neighborhoods by Crime Count', fontsize=16)
 plt.tight_layout()
 plt.show()
+
+
+
+# Ensure you have your cleaned DataFrame (replace with actual cleaned df if needed)
+# We'll assume df_clean already exists — if not, use df instead.
+top_offenses = df_clean['OFFENSE'].value_counts().nlargest(5).index
+df_filtered = df_clean[df_clean['OFFENSE'].isin(top_offenses)]
+
+# OBJECTIVE 4: LATITUDE AND LONGITUDE DISTRIBUTION
+plt.figure(figsize=(14, 6))
+
+# Latitude boxplot
+plt.subplot(1, 2, 1)
+sns.boxplot(
+    data=df_filtered,
+    x='OFFENSE',
+    y='LATITUDE',
+    hue='OFFENSE',
+    palette='Set2',
+    legend=False
+)
+plt.title('Latitude Distribution by Crime Type')
+plt.xlabel('Crime Type')
+plt.ylabel('Latitude')
+plt.xticks(rotation=30)
+
+# Longitude boxplot
+plt.subplot(1, 2, 2)
+sns.boxplot(
+    data=df_filtered,
+    x='OFFENSE',
+    y='LONGITUDE',
+    hue='OFFENSE',
+    palette='Set2',
+    legend=False
+)
+plt.title('Longitude Distribution by Crime Type')
+plt.xlabel('Crime Type')
+plt.ylabel('Longitude')
+plt.xticks(rotation=30)
+
+plt.tight_layout()
+plt.show()
