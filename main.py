@@ -266,3 +266,23 @@ axs[1].legend(title='Weapon', bbox_to_anchor=(1.05, 1))
 # Layout adjustment
 plt.tight_layout()
 plt.show()
+
+
+#Objective 6
+#Crime Types By ward
+
+# Prepare the pivot table
+ward_crime = df.groupby(['WARD', 'OFFENSE']).size().unstack().fillna(0)
+
+# Create the heatmap
+plt.figure(figsize=(14, 8))
+sns.heatmap(ward_crime, cmap='YlGnBu', annot=True, fmt='.0f', linewidths=.5)
+
+# Titles and labels
+plt.title('Crime Types by Ward', fontsize=16)
+plt.xlabel('Crime Type')
+plt.ylabel('Ward')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
