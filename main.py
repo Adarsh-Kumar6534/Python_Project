@@ -157,3 +157,25 @@ axes[1].legend(title='Shift')
 plt.tight_layout()
 plt.show()
 
+#OBJECTIVE 3
+# CRIME COUNT BY NEIGHBOURHOOD
+
+# Prepare data
+top_neighborhoods = df['NEIGHBORHOOD_CLUSTER'].value_counts().nlargest(10)
+
+# Light pastel color palette
+colors = sns.color_palette('pastel', len(top_neighborhoods))
+
+# Create pie chart
+plt.figure(figsize=(10, 8))
+plt.pie(
+    top_neighborhoods.values,
+    labels=top_neighborhoods.index,
+    autopct='%1.1f%%',
+    startangle=140,
+    colors=colors,
+    wedgeprops={'edgecolor': 'white'}
+)
+plt.title('Top 10 Neighborhoods by Crime Count', fontsize=16)
+plt.tight_layout()
+plt.show()
