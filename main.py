@@ -222,3 +222,47 @@ plt.xticks(rotation=30)
 
 plt.tight_layout()
 plt.show()
+
+
+#OBJECTIVE 5 
+# WEAPON USAGE
+
+# Filter violent crimes
+violent_crimes = df[df['OFFENSE'].isin(['ROBBERY', 'ASSAULT W/DANGEROUS WEAPON', 'HOMICIDE'])]
+
+# Count weapon types
+method_counts = violent_crimes['METHOD'].value_counts()
+
+# Create figure and subplots
+fig, axs = plt.subplots(1, 2, figsize=(16, 7))
+
+# --- Subplot 1: Donut Chart ---
+colors = sns.color_palette("pastel", len(method_counts))
+wedges, texts, autotexts = axs[0].pie(
+    method_counts,
+    labels=method_counts.index,
+    autopct='%1.1f%%',
+    startangle=140,
+    colors=colors,
+    wedgeprops=dict(width=0.4)
+)
+axs[0].set_title(' Weapons Used in Violent Crimes', fontsize=14)
+axs[0].axis('equal')  # Equal aspect ratio ensures the pie is round
+
+# --- Subplot 2: Grouped Bar Plot ---
+sns.countplot(
+    data=violent_crimes,
+    x='OFFENSE',
+    hue='METHOD',
+    palette='coolwarm',
+    ax=axs[1]
+)
+axs[1].set_title(' Weapon Usage by Crime Type', fontsize=14)
+axs[1].set_xlabel('Crime Type')
+axs[1].set_ylabel('Number of Incidents')
+axs[1].tick_params(axis='x', rotation=30)
+axs[1].legend(title='Weapon', bbox_to_anchor=(1.05, 1))
+
+# Layout adjustment
+plt.tight_layout()
+plt.show()
