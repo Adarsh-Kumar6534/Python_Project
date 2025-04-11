@@ -43,3 +43,79 @@ z_scores = (df_clean[numeric_cols] - df_clean[numeric_cols].mean()) / df_clean[n
 outliers = (np.abs(z_scores) > 3).any(axis=1)
 print(f"\nNumber of spatial outliers found: {outliers.sum()}")
 df_clean = df_clean[~outliers]
+
+#OBJECTIVE 1
+# TIMELY CRIME INCIDENTS
+
+# Load the data
+df = pd.read_csv('crime_data.csv')
+
+# Convert REPORT_DAT to datetime
+df['REPORT_DAT'] = pd.to_datetime(df['REPORT_DAT'], errors='coerce')
+
+# Extract time features
+df['MONTH'] = df['REPORT_DAT'].dt.month_name()
+df['DAY_OF_WEEK'] = df['REPORT_DAT'].dt.day_name()
+df['HOUR'] = df['REPORT_DAT'].dt.hour
+
+# Set seaborn theme
+sns.set_theme(style="whitegrid")
+
+
+# -------------------------
+# 1. Line Plot - Crimes by Month
+# -------------------------
+plt.figure(figsize=(10, 6))
+month_order = ['January', 'February', 'March', 'April', 'May', 'June', 
+               'July', 'August', 'September', 'October', 'November', 'December']
+monthly_counts = df['MONTH'].value_counts().reindex(month_order)
+sns.lineplot(x=monthly_counts.index, y=monthly_counts.values, marker="o", color="skyblue")
+plt.title('Crime Incidents by Month')
+plt.xlabel('Month')
+plt.ylabel('Number of Incidents')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Prepare the data
+day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+day_counts = df['DAY_OF_WEEK'].value_counts().reindex(day_order)
+
+# Use pastel color palette from Seaborn
+colors = sns.color_palette("pastel", len(day_counts))
+
+# Plot with matplotlib to avoid seaborn warnings
+plt.figure(figsize=(10, 6))
+plt.bar(day_counts.index, day_counts.values, color=colors)
+plt.title('Crime Incidents by Day of Week')
+plt.xlabel('Day of Week')
+plt.ylabel('Number of Incidents')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Count crimes by shift
+shift_order = ['MIDNIGHT', 'DAY', 'EVENING']
+shift_counts = df['SHIFT'].value_counts().reindex(shift_order)
+
+# Use a different color palette (coolwarm)
+colors = sns.color_palette("coolwarm", len(shift_counts))
+
+# Horizontal bar chart
+plt.figure(figsize=(8, 5))
+plt.barh(shift_counts.index, shift_counts.values, color=colors)
+plt.title('Crime Incidents by Shift')
+plt.xlabel('Number of Incidents')
+plt.ylabel('Shift')
+plt.tight_layout()
+plt.show()
+
+
