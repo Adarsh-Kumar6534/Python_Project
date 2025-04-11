@@ -119,3 +119,41 @@ plt.tight_layout()
 plt.show()
 
 
+#OBJECTIVE 2
+# DISTRIBUTION OF CRIME TYPES
+
+# Prepare data
+offense_counts = df['OFFENSE'].value_counts()
+top_crimes = offense_counts.nlargest(5).index
+df_top = df[df['OFFENSE'].isin(top_crimes)]
+
+# Create subplots
+fig, axes = plt.subplots(1, 2, figsize=(20, 8))
+
+# --- Chart 1: Distribution of All Crime Types ---
+colors = sns.color_palette("pastel", len(offense_counts))
+axes[0].barh(offense_counts.index, offense_counts.values, color=colors)
+axes[0].set_title('Distribution of Crime Types', fontsize=16)
+axes[0].set_xlabel('Number of Incidents')
+axes[0].set_ylabel('Crime Type')
+axes[0].invert_yaxis()
+
+# --- Chart 2: Top 5 Crime Types by Shift ---
+sns.countplot(
+    ax=axes[1],
+    x='OFFENSE',
+    hue='SHIFT',
+    data=df_top,
+    order=top_crimes,
+    palette='coolwarm'
+)
+axes[1].set_title('Top 5 Crime Types by Shift', fontsize=16)
+axes[1].set_xlabel('Crime Type')
+axes[1].set_ylabel('Number of Incidents')
+axes[1].tick_params(axis='x', rotation=30)
+axes[1].legend(title='Shift')
+
+# Adjust layout
+plt.tight_layout()
+plt.show()
+
